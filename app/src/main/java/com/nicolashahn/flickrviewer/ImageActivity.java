@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 
 import com.loopj.android.image.SmartImageView;
 import com.nicolashahn.flickrviewer.util.SystemUiHider;
@@ -54,6 +55,9 @@ public class ImageActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Remove title bar
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_image);
 
@@ -114,17 +118,17 @@ public class ImageActivity extends Activity {
             }
         });
 
-
+        // get the url from MainActivity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             // right now this gets a small image - the '_m' before '.jpg'
             IMG_URL = extras.getString("IMG_URL");
-            // get the fullsize image instead
+            // get the fullsize image instead by removing '_m'
             IMG_URL = IMG_URL.substring(0, IMG_URL.length() - "_m.jpg".length())+".jpg";
             Log.i(LOG_TAG,"IMG_URL = "+IMG_URL );
         }
 
-
+        // Fill the image using SmartImageView (external package)
         SmartImageView i = (SmartImageView) findViewById(R.id.imageView);
         i.setImageUrl(IMG_URL);
 
@@ -143,23 +147,6 @@ public class ImageActivity extends Activity {
         // are available.
         delayedHide(100);
     }
-
-
-    /**
-     * Touch listener to use for in-layout UI controls to delay hiding the
-     * system UI. This is to prevent the jarring behavior of controls going away
-     * while interacting with activity UI.
-     *
-    View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (AUTO_HIDE) {
-                delayedHide(AUTO_HIDE_DELAY_MILLIS);
-            }
-            return false;
-        }
-    };
-    */
 
     Handler mHideHandler = new Handler();
     Runnable mHideRunnable = new Runnable() {

@@ -8,7 +8,7 @@
 
 
     <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="470dp"
         android:id="@+id/listView"
         android:layout_alignParentTop="true"
@@ -30,6 +30,9 @@
         android:id="@+id/refreshButton"
         android:onClick="clickRefresh"
         android:layout_below="@+id/progressBar"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:typeface="normal"
+        android:textColor="@color/abc_secondary_text_material_light" />
 
 </RelativeLayout>
