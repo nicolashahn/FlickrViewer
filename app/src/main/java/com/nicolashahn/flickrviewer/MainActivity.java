@@ -208,7 +208,7 @@ public class MainActivity extends ActionBarActivity {
                 // rm spinner, toast 'message sent', rm message text, set lastResult
                 ProgressBar pbar = (ProgressBar) findViewById(R.id.progressBar);
                 pbar.setVisibility(View.INVISIBLE);
-                Toast toast = Toast.makeText(context, "Messages updated", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(context, "Images updated", Toast.LENGTH_SHORT);
                 toast.show();
                 lastResult = result;
 
@@ -238,30 +238,5 @@ public class MainActivity extends ActionBarActivity {
         aa.notifyDataSetChanged();
     }
 
-    /*
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
 
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }
-    */
 }
