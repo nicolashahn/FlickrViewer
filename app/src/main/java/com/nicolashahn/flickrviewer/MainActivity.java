@@ -1,6 +1,7 @@
 package com.nicolashahn.flickrviewer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -22,13 +23,12 @@ import com.google.gson.Gson;
 import com.loopj.android.image.SmartImageView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
 
-    //the last result we got from the server
+    //the last JSON string we got from the server
     public String lastResult;
 
     private static final String LOG_TAG = "FlickrViewer";
@@ -37,7 +37,6 @@ public class MainActivity extends ActionBarActivity {
 
     private static final String SERVER_URL= "https://api.flickr.com/services/feeds/photos_public.gne?format=json";
 
-    // Uploader.
     private ServerCall uploader;
 
     private class ListElement {
@@ -65,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             LinearLayout newView;
 
-            ListElement w = getItem(position);
+            final ListElement w = getItem(position);
 
             // Inflate a new view if necessary.
             if (convertView == null) {
@@ -86,23 +85,16 @@ public class MainActivity extends ActionBarActivity {
             SmartImageView i = (SmartImageView) newView.findViewById(R.id.imageView1);
             i.setImageUrl(w.imageLink);
 
-            // new DownloadImageTask(i).execute(w.imageLink);
-
-
-            // Sets a listener for the button, and a tag for the button as well.
-            // toasts the item index
-            //b.setTag(new Integer(position));
             i.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Reacts to a button press.
 
-                    // Gets the message to share.
-                    // ListElement msg = getItem(((Integer)v.getTag()).intValue()).textLabel;
+                    //Toast toast = Toast.makeText(context, "boop", Toast.LENGTH_SHORT);
+                    //toast.show();
 
-                    //String s = v.getTag().toString();
-                    Toast toast = Toast.makeText(context, "boop", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Intent intent = new Intent(context, ImageActivity.class);
+                    intent.putExtra("IMG_URL", w.imageLink);
+                    startActivity(intent);
                 }
             });
 
@@ -135,6 +127,8 @@ public class MainActivity extends ActionBarActivity {
         ListView myListView = (ListView) findViewById(R.id.listView);
         myListView.setAdapter(aa);
         aa.notifyDataSetChanged();
+        // make server call on application load
+        refreshList();
     }
 
 
@@ -170,12 +164,6 @@ public class MainActivity extends ActionBarActivity {
         RefreshImagesSpec myCallSpec = new RefreshImagesSpec();
         myCallSpec.url = SERVER_URL;
         myCallSpec.context = MainActivity.this;
-
-        // Let's add the parameters.
-        HashMap<String, String> m = new HashMap<String, String>();
-
-        myCallSpec.setParams(m);
-
         // Actual server call.
         if (uploader != null) {
             // There was already an upload in progress.
@@ -187,6 +175,7 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    // what we do when we recieve a response from server
     class RefreshImagesSpec extends ServerCallSpec {
         @Override
         public void useResult(Context context, String result) {
@@ -198,6 +187,7 @@ public class MainActivity extends ActionBarActivity {
             }else {
                 // Translates the string result, decoding the Json.
                 Log.i(LOG_TAG, "Received string: " + result);
+                //display image objects we got
                 displayResult(result);
                 // Stores in the settings the last images received.
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
@@ -216,19 +206,19 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    // Take the json string, create a list of objects for each json object
+    // display them in the listView
     private void displayResult(String resultj) {
         // chop off unnecessary bits of string for gson
-        String result = resultj.substring("jsonFlickrFeed(".length(),resultj.length()-1);
-        result = result.substring(0, result.length()-1);
+        String result = resultj.substring("jsonFlickrFeed(".length(),resultj.length()-2);
         Log.i(LOG_TAG,result);
-
         Gson gson = new Gson();
         // takes result string from server in JSON
         // converts to MessageList using GSON
         ImageInfo im = gson.fromJson(result, ImageInfo.class);
         // Fills aList(global object), so we can fill the listView.
         aList.clear();
-        // creates a new ListElement for each item in MessageList
+        // creates a new ListElement for each Flickr image object
         for (int i = 0; i < im.items.length; i++) {
             ListElement ael = new ListElement();
             ael.textLabel = im.items[i].title+"\n"+im.items[i].author;

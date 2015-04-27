@@ -9,12 +9,14 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/itemText"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical" />
 
     <com.loopj.android.image.SmartImageView
         android:id="@+id/imageView1"
-        android:layout_width="60dp"
-        android:layout_height="60dp" />
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_vertical" />
 
 
 </LinearLayout>

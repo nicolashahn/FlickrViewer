@@ -5,9 +5,9 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.MotionEvent;
 import android.view.View;
 
+import com.loopj.android.image.SmartImageView;
 import com.nicolashahn.flickrviewer.util.SystemUiHider;
 
 
@@ -45,6 +45,10 @@ public class ImageActivity extends Activity {
      * The instance of the {@link SystemUiHider} for this activity.
      */
     private SystemUiHider mSystemUiHider;
+
+    // for now a static random image
+    protected String IMG_URL = "https://farm8.staticflickr.com/7604/17080676799_b67cf9325b_m.jpg";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,10 +113,20 @@ public class ImageActivity extends Activity {
             }
         });
 
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            IMG_URL = extras.getString("IMG_URL");
+        }
+
+
+        SmartImageView i = (SmartImageView) findViewById(R.id.imageView);
+        i.setImageUrl(IMG_URL);
+
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+        //findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
     }
 
     @Override
@@ -130,7 +144,7 @@ public class ImageActivity extends Activity {
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
      * while interacting with activity UI.
-     */
+     *
     View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -140,6 +154,7 @@ public class ImageActivity extends Activity {
             return false;
         }
     };
+    */
 
     Handler mHideHandler = new Handler();
     Runnable mHideRunnable = new Runnable() {
@@ -156,5 +171,9 @@ public class ImageActivity extends Activity {
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+    public void clickBack(View v){
+        finish();
     }
 }
