@@ -9,15 +9,15 @@
 
     <ListView
         android:layout_width="wrap_content"
-        android:layout_height="400dp"
+        android:layout_height="470dp"
         android:id="@+id/listView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:fastScrollAlwaysVisible="false" />
 
     <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:id="@+id/progressBar"
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/listView"

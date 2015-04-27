@@ -1,11 +1,11 @@
 package com.nicolashahn.flickrviewer;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,7 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+// public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     //the last JSON string we got from the server
     public String lastResult;
@@ -42,7 +43,8 @@ public class MainActivity extends ActionBarActivity {
     private class ListElement {
         ListElement() {};
 
-        public String textLabel;
+        public String titleLabel;
+        public String authLabel;
         public String imageLink;
     }
 
@@ -76,9 +78,11 @@ public class MainActivity extends ActionBarActivity {
                 newView = (LinearLayout) convertView;
             }
 
-            // Fill the title, timestamp
+            // Fill the title, author
             TextView tv = (TextView) newView.findViewById(R.id.itemText);
-            tv.setText(w.textLabel);
+            tv.setText(w.titleLabel);
+            TextView tv1 = (TextView) newView.findViewById(R.id.itemText1);
+            tv1.setText(w.authLabel);
 
             // Fill the image using DownloadImageTask class at end of this file
             // ImageView i = (ImageView) newView.findViewById(R.id.imageView);
@@ -100,7 +104,7 @@ public class MainActivity extends ActionBarActivity {
 
             // Set a listener for the whole list item.
             // toasts the message content
-            newView.setTag(w.textLabel);
+            newView.setTag(w.titleLabel);
             newView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -221,7 +225,8 @@ public class MainActivity extends ActionBarActivity {
         // creates a new ListElement for each Flickr image object
         for (int i = 0; i < im.items.length; i++) {
             ListElement ael = new ListElement();
-            ael.textLabel = im.items[i].title+"\n"+im.items[i].author;
+            ael.titleLabel = im.items[i].title;
+            ael.authLabel = im.items[i].author;
             ael.imageLink = im.items[i].media.m;
             aList.add(ael);
         }

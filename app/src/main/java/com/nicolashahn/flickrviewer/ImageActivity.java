@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 
 import com.loopj.android.image.SmartImageView;
@@ -46,8 +47,8 @@ public class ImageActivity extends Activity {
      */
     private SystemUiHider mSystemUiHider;
 
-    // for now a static random image
-    protected String IMG_URL = "https://farm8.staticflickr.com/7604/17080676799_b67cf9325b_m.jpg";
+    private static final String LOG_TAG = "ImageActivity";
+    protected String IMG_URL;
 
 
     @Override
@@ -116,7 +117,11 @@ public class ImageActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            // right now this gets a small image - the '_m' before '.jpg'
             IMG_URL = extras.getString("IMG_URL");
+            // get the fullsize image instead
+            IMG_URL = IMG_URL.substring(0, IMG_URL.length() - "_m.jpg".length())+".jpg";
+            Log.i(LOG_TAG,"IMG_URL = "+IMG_URL );
         }
 
 
