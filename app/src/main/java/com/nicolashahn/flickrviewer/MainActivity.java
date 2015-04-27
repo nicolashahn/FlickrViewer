@@ -72,16 +72,18 @@ public class MainActivity extends Activity {
             }
 
             // Fill the title, author
-            TextView tv = (TextView) newView.findViewById(R.id.itemText);
+            TextView tv = (TextView) newView.findViewById(R.id.titleText);
             tv.setText(w.titleLabel);
-            TextView tv1 = (TextView) newView.findViewById(R.id.itemText1);
+            TextView tv1 = (TextView) newView.findViewById(R.id.authText);
             tv1.setText(w.authLabel);
 
             // Fill image using SmartImageView (external package)
             SmartImageView i = (SmartImageView) newView.findViewById(R.id.imageView1);
             i.setImageUrl(w.imageLink);
 
-            i.setOnClickListener(new View.OnClickListener() {
+            // click anywhere on list element to get fullscreen view
+            LinearLayout l = (LinearLayout) newView.findViewById(R.id.listEl);
+            l.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
@@ -136,15 +138,14 @@ public class MainActivity extends Activity {
         public void useResult(Context context, String result) {
             if (result == null){
                 //display toast saying the server can't be reached
-                int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(context, "can't reach server", duration);
+                Toast toast = Toast.makeText(context, "can't reach server", Toast.LENGTH_SHORT);
                 toast.show();
             }else {
                 // Translates the string result, decoding the Json.
                 Log.i(LOG_TAG, "Received string: " + result);
                 //display image objects we got
                 displayResult(result);
-                // rm spinner, rm message text, set lastResult
+                // turn off spinner, set lastResult
                 ProgressBar pbar = (ProgressBar) findViewById(R.id.progressBar);
                 pbar.setVisibility(View.INVISIBLE);
                 lastResult = result;
@@ -168,9 +169,11 @@ public class MainActivity extends Activity {
         for (int i = 0; i < im.items.length; i++) {
             ListElement ael = new ListElement();
             ael.titleLabel = im.items[i].title;
-            // have to get rid of "nobody@flickr.com"
-            String auth = im.items[i].author.substring("nobody@flickr.com (".length(), im.items[i].author.length()-1);
+            // have to get rid of "nobody@flickr.com ()"
+            String auth = im.items[i].author;
+            auth = auth.substring("nobody@flickr.com (".length(), auth.length()-1);
             ael.authLabel = auth;
+            // small image url - will get full size url in ImageActivity
             ael.imageLink = im.items[i].media.m;
             aList.add(ael);
         }

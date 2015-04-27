@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:id="@+id/listEl">
 
     <LinearLayout
         android:orientation="vertical"
@@ -15,8 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:layout_below="@+id/textView"
-            android:id="@+id/itemText"
+            android:id="@+id/titleText"
             android:layout_weight="1"
             android:textStyle="bold" />
 
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/itemText1"
+            android:id="@+id/authText"
             android:layout_weight="1" />
     </LinearLayout>
 
