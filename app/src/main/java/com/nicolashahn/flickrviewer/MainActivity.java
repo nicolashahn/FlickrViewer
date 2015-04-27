@@ -168,7 +168,12 @@ public class MainActivity extends Activity {
         // creates a new ListElement for each Flickr image object
         for (int i = 0; i < im.items.length; i++) {
             ListElement ael = new ListElement();
-            ael.titleLabel = im.items[i].title;
+            // in case we don't get a title
+            if(im.items[i].title == "" || im.items[i].title == " "){
+                ael.titleLabel = "(untitled)";
+            } else {
+                ael.titleLabel = im.items[i].title;
+            }
             // have to get rid of "nobody@flickr.com ()"
             String auth = im.items[i].author;
             auth = auth.substring("nobody@flickr.com (".length(), auth.length()-1);

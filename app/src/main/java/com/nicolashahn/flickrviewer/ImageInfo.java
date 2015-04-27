@@ -7,11 +7,11 @@ package com.nicolashahn.flickrviewer;
 public class ImageInfo{
     public ImageInfo() {}
 
-    String title;
-    String link;
-    String description;
-    String modified;
-    String generator;
+//    String title;
+//    String link;
+//    String description;
+//    String modified;
+//    String generator;
     ImageObj[] items;
 
     public class ImageObj{
@@ -19,14 +19,14 @@ public class ImageInfo{
             String m;
         }
         String title;
-        String link;
+//        String link;
         MediaObj media;
-        String date_taken;
-        String description;
-        String published;
+//        String date_taken;
+//        String description;
+//        String published;
         String author;
-        String author_id;
-        String tags;
+//        String author_id;
+//        String tags;
     }
 
 }
